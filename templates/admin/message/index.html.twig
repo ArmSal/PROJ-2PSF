@@ -1,20 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello Admin/MessageController!{% endblock %}
+{% block title %}ContactMessage index{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>ContactMessage index</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Sujet</th>
+                <th>Message</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contact_message in contact_messages %}
+            <tr>
+                <td>{{ contact_message.id }}</td>
+                <td>{{ contact_message.nom }}</td>
+                <td>{{ contact_message.email }}</td>
+                <td>{{ contact_message.sujet }}</td>
+                <td>{{ contact_message.message }}</td>
+                <td>{{ contact_message.createdAt ? contact_message.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_message_show', {'id': contact_message.id}) }}">show</a>
+                    <a href="{{ path('app_message_edit', {'id': contact_message.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/laragon/www/PROJ-2PSF/src/Controller/Admin/MessageController.php</code></li>
-        <li>Your template at <code>C:/laragon/www/PROJ-2PSF/templates/admin/message/index.html.twig</code></li>
-    </ul>
-</div>
+    <a href="{{ path('app_message_new') }}">Create new</a>
 {% endblock %}
