@@ -21,10 +21,15 @@ final class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $contactMessage->setCreatedAt(new \DateTimeImmutable()); 
+
+
+
             $entityManager->persist($contactMessage);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'L\'article et son image ont bien été supprimés.');
+            return $this->redirectToRoute('app_contact', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('contact/index.html.twig', [

@@ -30,6 +30,10 @@ final class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $article->setCreatedAt(new \DateTimeImmutable());
+            
+            $article->setImageFile($form->get('imageFile')->getData());
+
             $entityManager->persist($article);
             $entityManager->flush();
 
@@ -57,7 +61,14 @@ final class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $article->setUpdatedAt(new \DateTimeImmutable());
+            
+
+            $article->setImageFile($form->get('imageFile')->getData());
+
             $entityManager->flush();
+                
+                $this->addFlash('success', 'L\'article a bien été modifié.');
 
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -67,15 +78,17 @@ final class ArticleController extends AbstractController
             'form' => $form,
         ]);
     }
-
     #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->getPayload()->getString('_token'))) {
+    
             $entityManager->remove($article);
             $entityManager->flush();
+    
+            $this->addFlash('success', 'L\'article et son image ont bien été supprimés.');
         }
-
+    
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -22,26 +22,6 @@ final class MessageController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_message_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $contactMessage = new ContactMessage();
-        $form = $this->createForm(ContactMessageType::class, $contactMessage);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($contactMessage);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('admin/message/new.html.twig', [
-            'contact_message' => $contactMessage,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'app_message_show', methods: ['GET'])]
     public function show(ContactMessage $contactMessage): Response
     {
@@ -57,8 +37,8 @@ final class MessageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
 
+            $entityManager->flush();
             return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -74,6 +54,7 @@ final class MessageController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$contactMessage->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($contactMessage);
             $entityManager->flush();
+            $this->addFlash('success', 'Le message de contact a été supprimé avec succès.');
         }
 
         return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);

@@ -1,44 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion !{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
-    <main class="form-signin w-100 m-auto">
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4">
-                    <form method="post">
-                        {% if error %}
-                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                        {% endif %}
-
-                        {% if app.user %}
-                            <div class="mb-3">
-                                Connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
-                            </div>
-                        {% endif %}
-                        <img class="mb-4" src="/img/logo.svg" alt="" width="72" height="57">
-                        <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
-                        <label for="inputEmail">Adresse e-mail</label>
-                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-                        <label for="inputPassword">Mot de passe</label>
-                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-                        <input type="hidden" name="_csrf_token"
-                            value="{{ csrf_token('authenticate') }}"
-                        >
-
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" name="_remember_me"> Se souvenir de moi
-                            </label>
-                        </div>
-
-                        <button class="btn btn-lg btn-primary" type="submit">
-                            Se connecter
-                        </button>
-                    </form>
-                </div>
-            </div>
+<div class="container mt-4 d-flex justify-content-center">
+    <div class="card shadow border-0" style="width: 320px;">
+        <div class="card-img-top bg-image"
+            style="height: 250px; background-image: url('/img/logo.png'); background-size: cover; background-position: center;">
         </div>
-    </main>
+        <div class="card-body p-3">
+            <h1 class="h6 card-title text-center mb-3">Administrateur</h1>
+
+            {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    Identifiants incorrects. Veuillez réessayer.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                </div>
+            {% endif %}
+
+            <form method="post">
+                <div class="mb-2">
+                    <label for="inputEmail" class="form-label small fw-semibold">
+                        <i class="bi bi-envelope-fill me-1"></i>Adresse e-mail
+                    </label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control form-control-sm" autocomplete="email" required autofocus>
+                </div>
+                <div class="mb-2">
+                    <label for="inputPassword" class="form-label small fw-semibold">
+                        <i class="bi bi-lock-fill me-1"></i>Mot de passe
+                    </label>
+                    <input type="password" name="password" id="inputPassword" class="form-control form-control-sm" autocomplete="current-password" required>
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" name="_remember_me" id="rememberMe">
+                    <label class="form-check-label small" for="rememberMe">Se souvenir de moi</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm w-100 d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-box-arrow-in-right"></i> Se connecter
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

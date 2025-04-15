@@ -1,42 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ContactMessage{% endblock %}
+{% block title %}Message - {{ contact_message.sujet }}{% endblock %}
 
 {% block body %}
-    <h1>ContactMessage</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ contact_message.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ contact_message.nom }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ contact_message.email }}</td>
-            </tr>
-            <tr>
-                <th>Sujet</th>
-                <td>{{ contact_message.sujet }}</td>
-            </tr>
-            <tr>
-                <th>Message</th>
-                <td>{{ contact_message.message }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ contact_message.createdAt ? contact_message.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_message_index') }}">back to list</a>
-
-    <a href="{{ path('app_message_edit', {'id': contact_message.id}) }}">edit</a>
-
-    {{ include('admin/message/_delete_form.html.twig') }}
+<div class="container mt-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <h2 class="m-0">
+            <i class="bi bi-envelope-paper-fill me-2"></i>Nom : {{ contact_message.nom }}
+        </h2>
+        <div class="d-flex gap-3 mt-2 mt-md-0">
+            <a href="{{ path('app_message_index') }}" title="Retour à la liste">
+                <i class="bi bi-arrow-left-circle fs-4 text-secondary"></i>
+            </a>
+            <form method="post" action="{{ path('app_message_delete', {'id': contact_message.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce message ?');" class="m-0 p-0">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ contact_message.id) }}">
+                <button type="submit" class="btn p-0 border-0 bg-transparent" title="Supprimer">
+                    <i class="bi bi-trash3-fill fs-4 text-danger"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="mb-4">
+        <span class="badge bg-success me-2">
+            <i class="bi bi-calendar-plus me-1"></i>
+            {{ contact_message.createdAt ? contact_message.createdAt|date('d/m/Y H:i') : 'Date inconnue' }}
+        </span>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="row mb-2 small">
+                <div class="col-12 col-md-6 mb-1 mb-md-0">
+                    <i class="bi bi-person-fill me-1"></i><strong>{{ contact_message.nom }}</strong>
+                </div>
+                <div class="col-12 col-md-6 text-md-end">
+                    <i class="bi bi-envelope-at-fill me-1"></i>
+                    <a href="mailto:{{ contact_message.email }}">{{ contact_message.email }}</a>
+                </div>
+            </div>
+            <div class="mb-3">
+                <strong><i class="bi bi-chat-left-text me-1"></i>Sujet :</strong>
+                {{ contact_message.sujet }}
+            </div>
+            <div class="bg-light border rounded p-3 small" style="white-space: pre-line;">
+                {{ contact_message.message }}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

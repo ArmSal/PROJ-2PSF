@@ -1,43 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Article index{% endblock %}
+{% block title %}Tableau de bord des Articles{% endblock %}
 
 {% block body %}
-    <h1>Article index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Contenu</th>
-                <th>ImageName</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for article in articles %}
-            <tr>
-                <td>{{ article.id }}</td>
-                <td>{{ article.titre }}</td>
-                <td>{{ article.contenu }}</td>
-                <td>{{ article.imageName }}</td>
-                <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
-                    <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_article_new') }}">Create new</a>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+            <h1 class="m-0">Articles du Blog</h1>
+            <a href="{{ path('app_article_new') }}"
+                class="text-decoration-none"
+                title="Créer un nouvel article">
+                <i class="bi bi-plus-circle-fill fs-3 text-primary"></i>
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle" style="min-width: 700px;">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col"><i class="bi bi-fonts"></i> Titre</th>
+                        <th scope="col"><i class="bi bi-image"></i> Image</th>
+                        <th scope="col"><i class="bi bi-calendar-check"></i> Créé le</th>
+                        <th scope="col"><i class="bi bi-pencil"></i> Modifié le</th>
+                        <th scope="col"><i class="bi bi-gear"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in articles %}
+                        <tr>
+                            <td class="text-break w-100" title="{{ article.titre }}">
+                                {{ article.titre }}
+                            </td>
+                            <td style="min-width: 120px;">
+                                {% if article.imageName %}
+                                    <img src="{{ asset('uploads/articles/' ~ article.imageName) }}"
+                                        alt="Image de l'article"
+                                        class="img-fluid rounded shadow-sm"
+                                        style="max-height: 30px; object-fit: cover;">
+                                {% else %}
+                                    <span class="text-muted">Aucune image</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-nowrap">
+                                <span class="badge bg-success me-2">
+                                    <i class="bi bi-calendar-event me-1"></i>
+                                    {{ article.createdAt ? article.createdAt|date('d/m/Y H:i') : 'Inconnue' }}
+                                </span>
+                            </td>
+                            <td class="text-nowrap">
+                                <span class="badge bg-primary">
+                                    <i class="bi bi-pencil-square me-1"></i>
+                                    {{ article.updatedAt ? article.updatedAt|date('d/m/Y H:i') : 'Non modifié' }}
+                                </span>
+                            </td>
+                            <td class="text-nowrap">
+                                <div class="d-flex gap-2 justify-content-center">
+                                    <a href="{{ path('app_article_show', {'id': article.id}) }}"
+                                        class="btn btn-info btn-sm"
+                                        title="Voir l'article">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ path('app_article_edit', {'id': article.id}) }}"
+                                        class="btn btn-warning btn-sm"
+                                        title="Modifier l'article">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form method="post"
+                                        action="{{ path('app_article_delete', {'id': article.id}) }}"
+                                        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');"
+                                        class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Supprimer l'article">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">Aucun article trouvé</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

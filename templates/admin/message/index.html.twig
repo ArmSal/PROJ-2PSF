@@ -1,43 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ContactMessage index{% endblock %}
+{% block title %}Dashboard des Messages{% endblock %}
 
 {% block body %}
-    <h1>ContactMessage index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Sujet</th>
-                <th>Message</th>
-                <th>CreatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for contact_message in contact_messages %}
-            <tr>
-                <td>{{ contact_message.id }}</td>
-                <td>{{ contact_message.nom }}</td>
-                <td>{{ contact_message.email }}</td>
-                <td>{{ contact_message.sujet }}</td>
-                <td>{{ contact_message.message }}</td>
-                <td>{{ contact_message.createdAt ? contact_message.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_message_show', {'id': contact_message.id}) }}">show</a>
-                    <a href="{{ path('app_message_edit', {'id': contact_message.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_message_new') }}">Create new</a>
+<div class="container mt-5">
+    <h1 class="mb-4">Tableau de bord des messages de contact</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">
+                        <i class="bi bi-person-fill"></i> Nom
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-envelope-fill"></i> Email
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-file-earmark-text-fill"></i> Sujet
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-calendar-check-fill"></i> Date
+                    </th>
+                    <th scope="col">
+                        <i class="bi bi-gear-fill"></i> Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in contact_messages %}
+                    <tr>
+                        <td>{{ message.nom }}</td>
+                        <td>{{ message.email }}</td>
+                        <td>{{ message.sujet|slice(0, 30) ~ (message.sujet|length > 30 ? '...' : '') }}</td>
+                        <td>
+                            <span class="badge bg-success me-2">
+                                <i class="bi bi-calendar-event me-1"></i>
+                                {{ message.createdAt ? message.createdAt|date('d/m/Y H:i') : 'Date inconnue' }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ path('app_message_show', {'id': message.id}) }}" class="btn btn-info btn-sm me-2" title="Voir">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <form method="post" action="{{ path('app_message_delete', {'id': message.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce message ?');" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ message.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm" title="Supprimer">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun message trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

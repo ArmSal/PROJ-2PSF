@@ -3,8 +3,75 @@
 {% block title %}Nouveau message{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
-        <h1>Créer un nouveau message</h1>
-        {{ include('contact/_form.html.twig') }}
+  <div class="container py-5">
+    <h1 class="text-center mb-4">Contactez-nous</h1>
+    <p class="text-center text-muted mb-5">Nous serons ravis de répondre à vos questions.</p>
+    <div class="row align-items-center justify-content-center">
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <img src="{{ asset('img/contact.jpg') }}" alt="Image de contact" class="img-fluid rounded shadow-sm w-100">
+      </div>
+      <div class="col-lg-6">
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+          <div class="mb-2">
+            <label for="inputNom" class="form-label small fw-semibold">
+              <i class="bi bi-person-fill me-1"></i>Nom
+            </label>
+            {{ form_widget(form.nom, {'attr': {
+              'class': 'form-control form-control-sm', 
+              'id': 'inputNom', 
+              'placeholder': 'Votre nom', 
+              'required': 'required', 
+              'maxlength': '40'
+            }}) }}
+            {{ form_errors(form.nom) }}
+          </div>
+          <div class="mb-2">
+            <label for="inputEmail" class="form-label small fw-semibold">
+              <i class="bi bi-envelope-fill me-1"></i>Adresse e-mail
+            </label>
+            {{ form_widget(form.email, {'attr': {
+              'class': 'form-control form-control-sm', 
+              'id': 'inputEmail', 
+              'placeholder': 'Votre email', 
+              'required': 'required', 
+              'type': 'email', 
+              'maxlength': '60'
+            }}) }}
+            {{ form_errors(form.email) }}
+          </div>
+          <div class="mb-2">
+            <label for="inputSujet" class="form-label small fw-semibold">
+              <i class="bi bi-chat-left-dots-fill me-1"></i>Sujet
+            </label>
+            {{ form_widget(form.sujet, {'attr': {
+              'class': 'form-control form-control-sm', 
+              'id': 'inputSujet', 
+              'placeholder': 'Sujet de votre message', 
+              'required': 'required', 
+              'maxlength': '100'
+            }}) }}
+            {{ form_errors(form.sujet) }}
+          </div>
+          <div class="mb-2">
+            <label for="inputMessage" class="form-label small fw-semibold">
+              <i class="bi bi-pencil-fill me-1"></i>Message
+            </label>
+            {{ form_widget(form.message, {'attr': {
+              'class': 'form-control form-control-sm', 
+              'id': 'inputMessage', 
+              'rows': '5', 
+              'placeholder': 'Votre message...', 
+              'required': 'required'
+            }}) }}
+            {{ form_errors(form.message) }}
+          </div>
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="bi bi-send-fill me-2"></i>Envoyer le message
+            </button>
+          </div>
+        {{ form_end(form) }}
+      </div>
     </div>
+  </div>
 {% endblock %}
