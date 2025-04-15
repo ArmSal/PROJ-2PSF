@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ article.titre }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+
+    <div class="card shadow-lg mb-4" style="background: linear-gradient(to bottom right,rgb(248, 248, 248),rgb(182, 182, 182));">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0">{{ article.titre }}</h1>
+                <a href="{{ path('app_blog') }}" class="btn btn-secondary btn-sm shadow">← Retour au Blog</a>
+            </div>
+            <p>
+                <span class="badge bg-secondary">
+                    Publié le {{ article.createdAt|date('d M Y') }}
+                </span>
+            </p>
+
+            {% if article.imageName %}
+                <img src="{{ asset('uploads/articles/' ~ article.imageName) }}" class="img-fluid rounded mb-4 d-block mx-auto" alt="{{ article.titre }}" style="max-width: 80%; max-height: 400px; height: auto;">
+            {% endif %}
+
+            <div class="card shadow-sm" style="background-color:rgb(247, 247, 247); border-radius: 15px; padding: 20px;">
+                <div class="fs-5">
+                    {{ article.contenu|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

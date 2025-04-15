@@ -1,3 +1,48 @@
 body {
     background-color: skyblue;
 }
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+.img-uniform {
+    width: 100%;
+    max-width: 200px;
+    height: 120px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.hover-img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card {
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn.shadow:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

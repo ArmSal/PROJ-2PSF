@@ -1,21 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BlogController!{% endblock %}
+{% block title %}Nos articles{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Nos articles</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {% if articles is empty %}
+        <p class="text-center">Aucun article publié pour le moment.</p>
+    {% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/laragon/www/PROJ-2PSF/src/Controller/BlogController.php</code></li>
-        <li>Your template at <code>C:/laragon/www/PROJ-2PSF/templates/blog/index.html.twig</code></li>
-    </ul>
+    <div class="row row-cols-1 g-2">
+        {% for article in articles %}
+            <div class="col">
+                <div class="card">
+                    <div class="row g-0 align-items-center">
+                        {% if article.imageName %}
+                            <div class="col-12 col-md-2">
+                                <img 
+                                    src="{{ asset('uploads/articles/' ~ article.imageName) }}" 
+                                    class="img-fluid rounded img-uniform hover-img m-1" 
+                                    alt="{{ article.titre }}"
+                                >
+                            </div>
+                        {% endif %}
+                        <div class="col-12 col-md-10">
+                            <div class="card-body py-2">
+                                <h5 class="card-title mb-1">{{ article.titre }}</h5>
+                                <p class="card-text mb-1" style="font-size: 0.85rem;">
+                                    {{ article.contenu|striptags|length > 120 
+                                        ? article.contenu|striptags|slice(0, 120) ~ '…'
+                                        : article.contenu|striptags }}
+                                </p>
+                                <p class="card-text mb-1">
+                                    <small class="text-body-secondary">
+                                        <i class="bi bi-calendar"></i> 
+                                        {{ article.createdAt|date('d M Y') }}
+                                    </small>
+                                </p>
+                                <div class="d-flex justify-content-end">
+                                    <a href="{{ path('blog_article_show', { id: article.id }) }}" class="btn btn-secondary btn-sm shadow">
+                                        <i class="bi bi-arrow-right-circle"></i> Lire
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
-
 {% endblock %}
