@@ -1,20 +1,76 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil - Blog jeux vidéo{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<section class="hero bg-dark text-white py-5 text-center">
+    <div class="container">
+        <h1 class="display-4">Bienvenue sur mon blog de jeux vidéo</h1>
+        <p class="lead">Découvrez mes derniers articles, critiques et coups de cœur vidéoludiques.</p>
+    </div>
+</section>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/laragon/www/PROJ-2PSF/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/laragon/www/PROJ-2PSF/templates/home/index.html.twig</code></li>
-    </ul>
-</div>
+<section class="latest-articles py-5">
+    <div class="container">
+        <h2 class="mb-4 text-center">Mes derniers articles</h2>
+
+        {% if articles is empty %}
+            <p class="text-center">Aucun article publié pour le moment.</p>
+        {% else %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for article in articles|slice(0, 5) %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="row g-0 align-items-center">
+                                {% if article.imageName %}
+                                    <div class="col-12 col-md-4">
+                                        <img 
+                                            src="{{ asset('uploads/articles/' ~ article.imageName) }}" 
+                                            class="img-fluid rounded-start img-uniform m-2" 
+                                            alt="{{ article.titre }}"
+                                        >
+                                    </div>
+                                {% endif %}
+                                <div class="col-12 col-md-8">
+                                    <div class="card-body py-3">
+                                        <h5 class="card-title mb-2">{{ article.titre }}</h5>
+                                        <p class="card-text" style="font-size: 0.85rem;">
+                                            {{ article.contenu|striptags|length > 120 
+                                                ? article.contenu|striptags|slice(0, 120) ~ '…'
+                                                : article.contenu|striptags }}
+                                        </p>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar"></i> 
+                                                {{ article.createdAt|date('d M Y') }}
+                                            </small>
+                                        </p>
+                                        <a href="{{ path('blog_article_show', { id: article.id }) }}" class="btn btn-outline-secondary btn-sm">
+                                            <i class="bi bi-arrow-right-circle"></i> Lire
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="about py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <h2 class="mb-3">À propos du blog</h2>
+                <p>Passionné par les jeux vidéo depuis l’enfance, j’ai créé ce blog pour partager mes coups de cœur, mes découvertes et mes analyses sur le monde vidéoludique. Que vous soyez amateur de RPG, de jeux indés ou de grandes licences, vous trouverez ici de quoi nourrir votre passion.</p>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="{{ asset('img/logo.png') }}" alt="Profil du blogueur" class="img-fluid rounded" style="max-height: 150px;">
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
