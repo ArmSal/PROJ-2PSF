@@ -17,24 +17,24 @@
                     <div class="row g-0 align-items-center">
                         {% if article.imageName %}
                             <div class="col-12 col-md-2">
-                                <img 
-                                    src="{{ asset('uploads/articles/' ~ article.imageName) }}" 
-                                    class="img-fluid rounded img-uniform hover-img m-1" 
-                                    alt="{{ article.titre }}"
-                                >
+                                <a href="{{ path('blog_article_show', { id: article.id }) }}">
+                                    <img
+                                        src="{{ asset('uploads/articles/' ~ article.imageName) }}"
+                                        class="img-fluid rounded img-uniform hover-img m-1"
+                                        alt="{{ article.titre }}"
+                                    >
+                                </a>
                             </div>
                         {% endif %}
-                        <div class="col-12 col-md-10">
+                        <div class="col-12 {% if article.imageName %}col-md-10{% else %}col-md-12{% endif %}">
                             <div class="card-body py-2">
                                 <h5 class="card-title mb-1">{{ article.titre }}</h5>
                                 <p class="card-text mb-1" style="font-size: 0.85rem;">
-                                    {{ article.contenu|striptags|length > 120 
-                                        ? article.contenu|striptags|slice(0, 120) ~ '…'
-                                        : article.contenu|striptags }}
+                                    {{article.contenu|striptags|slice(0, 120) ~ '…'}}
                                 </p>
                                 <p class="card-text mb-1">
                                     <small class="text-body-secondary">
-                                        <i class="bi bi-calendar"></i> 
+                                        <i class="bi bi-calendar"></i>
                                         {{ article.createdAt|date('d M Y') }}
                                     </small>
                                 </p>
