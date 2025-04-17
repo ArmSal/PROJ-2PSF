@@ -28,7 +28,7 @@ final class ContactController extends AbstractController
 
             $entityManager->persist($contactMessage);
             $entityManager->flush();
-            $this->addFlash('success', 'L\'article et son image ont bien été supprimés.');
+            $this->addFlash('success', 'Votre message de contact a été envoyé avec succès.');
             return $this->redirectToRoute('app_contact', [], Response::HTTP_SEE_OTHER);
         }
 
