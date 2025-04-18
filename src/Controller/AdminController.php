@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Doctrine\ORM\EntityManagerInterface;
+use App\DataFixtures\AppFixtures;
 
 final class AdminController extends AbstractController
 {
@@ -24,5 +26,16 @@ final class AdminController extends AbstractController
             'articles' => $articles,
             'messages' => $messages,
         ]);
+    }
+    #[Route('/load-fixtures', name: 'load_fixtures')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function loadFixtures(EntityManagerInterface $entityManager): Response
+    {
+        $fixtures = new AppFixtures();
+        $fixtures->load($entityManager);
+
+        $this->addFlash('success', '10 articles fictifs ont été ajoutés.');
+
+        return $this->redirectToRoute('app_admin');
     }
 }
