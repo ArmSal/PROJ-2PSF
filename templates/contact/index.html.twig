@@ -1,71 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouveau message{% endblock %}
+{% block title %}Contact{% endblock %}
 
 {% block body %}
   <div class="container py-5">
     <h1 class="text-center mb-4">Contactez-nous</h1>
     <p class="text-center text-muted mb-5">Nous serons ravis de répondre à vos questions.</p>
-    <div class="row align-items-center justify-content-center">
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <img src="{{ asset('img/contact.jpg') }}" alt="Image de contact" class="img-fluid rounded shadow-sm w-100">
+    <div class="row g-3">
+      <div class="col-lg-6 order-lg-1">
+        <div class="bg-light rounded shadow-sm p-3 h-100">
+          <h5 class="fw-bold mb-3"><i class="bi bi-info-circle-fill me-2"></i>Informations pratiques</h5>
+          <ul class="list-unstyled mb-3">
+            <li><i class="bi bi-geo-alt-fill me-2 text-primary"></i>970 Rue de la Bergeresse, 45160 Olivet, France</li>
+            <li><i class="bi bi-telephone-fill me-2 text-primary"></i>+33 2 46 91 50 71</li>
+            <li><i class="bi bi-clock-fill me-2 text-primary"></i>Lun - Ven : 09:00 - 18:00</li>
+          </ul>
+          <div class="ratio ratio-16x9 rounded overflow-hidden">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.602413844195!2d1.9106874767104944!3d47.84729527132497!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e4e5dfb484c969%3A0xe1b49ac14549732b!2sECOLE-IT!5e0!3m2!1sfr!2sfr!4v1745448524500!5m2!1sfr!2sfr"
+              width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+          </div>
+        </div>
       </div>
-      <div class="col-lg-6">
+      <div class="col-lg-6 order-lg-2">
         {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
           <div class="mb-2">
             <label for="inputNom" class="form-label small fw-semibold">
               <i class="bi bi-person-fill me-1"></i>Nom
             </label>
-            {{ form_widget(form.nom, {'attr': {
-              'class': 'form-control form-control-sm', 
-              'id': 'inputNom', 
-              'placeholder': 'Votre nom', 
-              'required': 'required', 
-              'maxlength': '40'
-            }}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control form-control-sm', 'id': 'inputNom', 'placeholder': 'Votre nom', 'required': 'required', 'maxlength': '40'}}) }}
             {{ form_errors(form.nom) }}
           </div>
           <div class="mb-2">
             <label for="inputEmail" class="form-label small fw-semibold">
               <i class="bi bi-envelope-fill me-1"></i>Adresse e-mail
             </label>
-            {{ form_widget(form.email, {'attr': {
-              'class': 'form-control form-control-sm', 
-              'id': 'inputEmail', 
-              'placeholder': 'Votre email', 
-              'required': 'required', 
-              'type': 'email', 
-              'maxlength': '60'
-            }}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-sm', 'id': 'inputEmail', 'placeholder': 'Votre email', 'required': 'required', 'type': 'email', 'maxlength': '60'}}) }}
             {{ form_errors(form.email) }}
           </div>
           <div class="mb-2">
             <label for="inputSujet" class="form-label small fw-semibold">
               <i class="bi bi-chat-left-dots-fill me-1"></i>Sujet
             </label>
-            {{ form_widget(form.sujet, {'attr': {
-              'class': 'form-control form-control-sm', 
-              'id': 'inputSujet', 
-              'placeholder': 'Sujet de votre message', 
-              'required': 'required', 
-              'maxlength': '100'
-            }}) }}
+            {{ form_widget(form.sujet, {'attr': {'class': 'form-control form-control-sm', 'id': 'inputSujet', 'placeholder': 'Sujet de votre message', 'required': 'required', 'maxlength': '100'}}) }}
             {{ form_errors(form.sujet) }}
           </div>
           <div class="mb-2">
             <label for="inputMessage" class="form-label small fw-semibold">
               <i class="bi bi-pencil-fill me-1"></i>Message
             </label>
-            {{ form_widget(form.message, {'attr': {
-              'class': 'form-control form-control-sm', 
-              'id': 'inputMessage', 
-              'rows': '5', 
-              'placeholder': 'Votre message...', 
-              'required': 'required'
-            }}) }}
+            {{ form_widget(form.message, {'attr': {'class': 'form-control form-control-sm', 'id': 'inputMessage', 'rows': '5', 'placeholder': 'Votre message...', 'required': 'required'}}) }}
             {{ form_errors(form.message) }}
           </div>
-          <div class="d-grid mt-4">
+          <div class="d-grid mt-3">
             <button type="submit" class="btn btn-primary btn-lg">
               <i class="bi bi-send-fill me-2"></i>Envoyer le message
             </button>
